@@ -1,12 +1,20 @@
 import React, {Component} from 'react';
+import NameBox from './NameBox.jsx';
+import MessageBox from './MessageBox.jsx';
 
 const ChatBar = React.createClass({
   render: function() {
-    console.log("Rendering <ChatBar />")
+    console.log("Rendering <ChatBar />");
+
     return (
       <footer>
-        <input id="username" type="text" value={this.props.nameObj.name} />
-        <input id="new-message" type="text" placeholder="Type a message and hit ENTER" />
+        <NameBox
+          userName={this.props.userObj.name}
+          renderOutput={this.props.handleEntry}
+          nameUpdate={this.props.handleName}/>
+        <MessageBox
+          message={this.props.userObj.message}
+          renderOutput={this.props.handleEntry}/>
       </footer>
     );
   }

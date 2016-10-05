@@ -4,6 +4,7 @@ import Message from './Message.jsx';
 const MessageList = React.createClass({
   render: function() {
     console.log("Rendering <MessageList />")
+
     return (
       <div id="message-list">
 
