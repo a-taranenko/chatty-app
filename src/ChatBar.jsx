@@ -10,11 +10,12 @@ const ChatBar = React.createClass({
       <footer>
         <NameBox
           userName={this.props.userObj.name}
-          renderOutput={this.props.handleEntry}
-          nameUpdate={this.props.handleName}/>
+          nameUpdate={this.props.handleName}
+        />
         <MessageBox
           message={this.props.userObj.message}
-          renderOutput={this.props.handleEntry}/>
+          renderOutput={this.props.handleEntry}
+        />
       </footer>
     );
   }

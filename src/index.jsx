@@ -10,7 +10,7 @@ import ReactDOM from 'react-dom';
 import App from './App.jsx';
 
 var data = {
-  currentUser: {name: "Bob", message: "Type a message and hit ENTER"}, // optional. if currentUser is not defined, it means the user is Anonymous
+  currentUser: {name: "", message: ""}, // optional. if currentUser is not defined, it means the user is Anonymous
   messages: [
     {
       username: "Bob",

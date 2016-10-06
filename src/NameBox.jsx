@@ -8,9 +8,10 @@ const NameBox = React.createClass({
       <input
         id="username"
         type="text"
+        placeholder="Enter your name"
         value={this.props.userName}
         onChange={this.props.nameUpdate}
-        onKeyPress={this.props.renderOutput} />
+      />
     );
   }
 });

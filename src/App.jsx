@@ -13,41 +13,24 @@ const App = React.createClass({
 
     setTimeout(() => {
       console.log("Simulating incoming message");
-
       this.state.messages.push({username: "Michelle", content: "Hello there!"});
-
-      // var myNewArray = this.state.messages.slice();
-      // myNewArray.push({username: "Michelle", content: "Hello there!"});
-
       this.setState({messages: this.state.messages});
     }, 3000);
   },
 
   nameChange: function(event) {
     this.state.userInput.name = event.target.value;
-
-    if (this.state.userInput.name === "") {
-      this.state.userInput.name = "Anonymous";
-    }
-
     this.setState({userInput: this.state.userInput});
   },
 
   renderOutput: function(event) {
     if (event.charCode === 13) {
-      console.log(event.target);
-
-      if (event.target.id === "username") {
-        if (event.target.value !== "") {
-          this.state.userInput.name = event.target.value;
-        } else {
-          this.state.userInput.name = "Anonymous";
-        }
-      } else {
-        this.state.userInput.message = event.target.value;
-        this.state.messages.push({username: this.state.userInput.name, content: this.state.userInput.message});
-        this.setState({messages: this.state.messages});
+      if (this.state.userInput.name === "") {
+        this.state.userInput.name = "Anonymous";
       }
+      this.state.userInput.message = event.target.value;
+      this.state.messages.push({username: this.state.userInput.name, content: this.state.userInput.message});
+      this.setState({messages: this.state.messages});
     }
   },
 
@@ -59,11 +42,14 @@ const App = React.createClass({
       <nav>
         <h1>Chatty</h1>
       </nav>
-      <MessageList messagesArr={this.state.messages}/>
+      <MessageList
+        messagesArr={this.state.messages}
+      />
       <ChatBar
         userObj={this.state.userInput}
         handleEntry={this.renderOutput}
-        handleName={this.nameChange}/>
+        handleName={this.nameChange}
+      />
       </div>
     );
   }

@@ -16,9 +16,11 @@ const MessageBox = React.createClass({
       <input
         id="new-message"
         type="text"
+        placeholder="Type a message and hit ENTER"
         value={this.state.message}
         onChange={this.handleChange}
-        onKeyPress={this.props.renderOutput} />
+        onKeyPress={this.props.renderOutput}
+      />
     );
   }
 });
