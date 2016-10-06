@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 
 const MessageBox = React.createClass({
   getInitialState: function() {
-    return {message: this.props.message};
+    return {message: ""};
   },
 
   handleChange: function(event) {

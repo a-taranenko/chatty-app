@@ -21,8 +21,37 @@ const wss = new SocketServer({ server });
 wss.on('connection', (ws) => {
   console.log('Client connected');
 
+  function generateUUID() {
+    var d = new Date().getTime();
+    var uuid = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+      var r = (d + Math.random()*16)%16 | 0;
+      d = Math.floor(d/16);
+      return (c=='x' ? r : (r&0x3|0x8)).toString(16);
+    });
+    return uuid;
+  }
+
+  function responseConstructor(message) {
+    var id = generateUUID();
+    var username = JSON.parse(message).username;
+    var content = JSON.parse(message).content;
+    var response = {id: id, username: username, content: content};
+
+    return response;
+  }
+
   ws.on('message', function(message) {
-    console.log("User", JSON.parse(message).username, "said", JSON.parse(message).content);
+    console.log("User", JSON.parse(message).username, "said", JSON.parse(message).content, generateUUID());
+
+    var data = JSON.stringify(responseConstructor(message));
+
+    wss.broadcast = function(data) {
+      wss.clients.forEach(function(client) {
+        client.send(data);
+      });
+    };
+
+    wss.broadcast(data);
   });
 
   // Set up a callback for when a client closes the socket. This usually means they closed their browser.
