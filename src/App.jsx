@@ -11,11 +11,21 @@ const App = React.createClass({
   componentDidMount: function() {
     console.log("componentDidMount <App />");
 
-    setTimeout(() => {
-      console.log("Simulating incoming message");
-      this.state.messages.push({username: "Michelle", content: "Hello there!"});
-      this.setState({messages: this.state.messages});
-    }, 3000);
+    this.socket = new WebSocket("ws://localhost:4000");
+
+    var sentMessage = JSON.stringify(this.state.messages[1]);
+
+    this.socket.onopen = function(event) {
+      console.log("Connected to server", this);
+
+      this.send(sentMessage);
+    }
+
+    // setTimeout(() => {
+    //   console.log("Simulating incoming message");
+    //   this.state.messages.push({username: "Michelle", content: "Hello there!"});
+    //   this.setState({messages: this.state.messages});
+    // }, 3000);
   },
 
   nameChange: function(event) {
@@ -31,6 +41,7 @@ const App = React.createClass({
       this.state.userInput.message = event.target.value;
       this.state.messages.push({username: this.state.userInput.name, content: this.state.userInput.message});
       this.setState({messages: this.state.messages});
+
     }
   },
 

@@ -14,7 +14,7 @@ var data = {
   messages: [
     {
       username: "Bob",
-      content: "Has anyone seen my marbles?",
+      content: "Has anyone seen my marbles?"
     },
     {
       username: "Anonymous",
