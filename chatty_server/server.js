@@ -21,6 +21,14 @@ const wss = new SocketServer({ server });
 wss.on('connection', (ws) => {
   console.log('Client connected');
 
+  wss.broadcastUsersLogged = function(data) {
+    var usersLoggedIn = {type: "incomingUserCount", userCount: data};
+    wss.clients.forEach(function(client) {
+      client.send(JSON.stringify(usersLoggedIn));
+    });
+  };
+  wss.broadcastUsersLogged(wss.clients.length);
+
   function generateUUID() {
     var d = new Date().getTime();
     var uuid = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
@@ -32,17 +40,23 @@ wss.on('connection', (ws) => {
   }
 
   function responseConstructor(message) {
-    var id = generateUUID();
-    var username = JSON.parse(message).username;
-    var content = JSON.parse(message).content;
-    var response = {id: id, username: username, content: content};
+    if (JSON.parse(message).type === "postMessage") {
+      var id = generateUUID();
+      var username = JSON.parse(message).username;
+      var content = JSON.parse(message).content;
+      var response = {type: "incomingMessage", id: id, username: username, content: content};
 
-    return response;
+      return response;
+    } else if (JSON.parse(message).type === "postNotification") {
+      var content = JSON.parse(message).content;
+      var response = {type: "incomingNotification", content: content}
+
+      return response;
+    }
   }
 
   ws.on('message', function(message) {
-    console.log("User", JSON.parse(message).username, "said", JSON.parse(message).content, generateUUID());
-
+    // console.log("User", JSON.parse(message).username, "said", JSON.parse(message).content, generateUUID());
     var data = JSON.stringify(responseConstructor(message));
 
     wss.broadcast = function(data) {
@@ -55,5 +69,8 @@ wss.on('connection', (ws) => {
   });
 
   // Set up a callback for when a client closes the socket. This usually means they closed their browser.
-  ws.on('close', () => console.log('Client disconnected'));
+  ws.on('close', () => {
+    console.log('Client disconnected');
+    wss.broadcastUsersLogged(wss.clients.length);
+  });
 });
