@@ -13,8 +13,6 @@ const App = React.createClass({
 
     this.socket = new WebSocket("ws://localhost:4000");
 
-    // var sentMessage = JSON.stringify(this.state.messages[1]);
-
     this.socket.onopen = function(event) {
       console.log("Connected to server", this);
     }
