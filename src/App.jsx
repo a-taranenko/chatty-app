@@ -17,7 +17,11 @@ const App = React.createClass({
 
     this.socket.onopen = function(event) {
       console.log("Connected to server", this);
-      // this.send(sentMessage);
+    }
+
+    this.socket.onmessage = (event) => {
+      this.state.messages.push(JSON.parse(event.data));
+      this.setState({messages: this.state.messages});
     }
   },
 
@@ -32,15 +36,9 @@ const App = React.createClass({
         this.state.currentUser = "Anonymous";
       }
 
-      // Step 1
       var sentMessage = {username: this.state.currentUser, content: event.target.value};
       this.socket.send(JSON.stringify(sentMessage));
-
-      // Step 2
-      this.socket.onmessage = (event) => {
-        this.state.messages.push(JSON.parse(event.data));
-        this.setState({messages: this.state.messages});
-      }
+      event.target.value = "";
     }
   },
 
